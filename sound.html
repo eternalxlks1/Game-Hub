@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game Hub Sounds</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f0f0f;
+      color: white;
+      margin: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #1c1c1c;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: #2d2d2d;
+      color: white;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔊 Game Hub Soundboard</h1>
+  <p>Click a button to play a sound</p>
+</header>
+
+<div class="container">
+
+  <button onclick="playSound('hub')">▶ Play Game Hub Theme</button>
+  <button onclick="playSound('click')">▶ Click Sound</button>
+  <button onclick="playSound('win')">▶ Win Sound</button>
+  <button onclick="playSound('lose')">▶ Lose Sound</button>
+
+</div>
+
+<!-- AUDIO FILES -->
+<audio id="hub">
+  <source src="The%20Game%20Hub.wav" type="audio/wav">
+</audio>
+
+<audio id="click">
+  <source src="click.wav" type="audio/wav">
+</audio>
+
+<audio id="win">
+  <source src="win.wav" type="audio/wav">
+</audio>
+
+<audio id="lose">
+  <source src="lose.wav" type="audio/wav">
+</audio>
+
+<script>
+  function playSound(id) {
+    const sound = document.getElementById(id)
+    sound.currentTime = 0
+    sound.play()
+  }
+</script>
+
+</body>
+</html>
+    
