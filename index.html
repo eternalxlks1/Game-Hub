@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game Hub v2</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f0f0f;
+      color: white;
+      margin: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #1c1c1c;
+    }
+
+    section {
+      padding: 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    button, input {
+      padding: 8px;
+      margin-top: 5px;
+    }
+
+    .box {
+      width: 80px;
+      height: 80px;
+      background: red;
+      position: relative;
+    }
+
+    canvas {
+      background: black;
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎮 Game Hub v2</h1>
+  <p>More games, same chaos</p>
+</header>
+
+<!-- CLICKER -->
+<section>
+  <h2>1. Clicker Game</h2>
+  <button onclick="clicker()">Click me</button>
+  <p>Score: <span id="clickScore">0</span></p>
+</section>
+
+<!-- DODGE BOX -->
+<section>
+  <h2>2. Dodge the Box</h2>
+  <p>Don’t get clicked!</p>
+  <div class="box" id="dodgeBox" onclick="lose()"></div>
+</section>
+
+<!-- GUESS -->
+<section>
+  <h2>3. Guess Number (1-20)</h2>
+  <input id="guess">
+  <button onclick="guess()">Guess</button>
+  <p id="guessOut"></p>
+</section>
+
+<!-- REACTION -->
+<section>
+  <h2>4. Reaction Game</h2>
+  <p>Wait for green, then click!</p>
+  <button id="reactBtn" onclick="reaction()">Start</button>
+</section>
+
+<!-- MATH GAME -->
+<section>
+  <h2>5. Math Game</h2>
+  <p id="mathQ"></p>
+  <input id="mathA">
+  <button onclick="checkMath()">Submit</button>
+</section>
+
+<!-- SIMPLE PONG -->
+<section>
+  <h2>6. Pong (Basic)</h2>
+  <canvas id="pong" width="300" height="150"></canvas>
+</section>
+
+<script>
+  // CLICKER
+  let score = 0
+  function clicker() {
+    score++
+    document.getElementById("clickScore").innerText = score
+  }
+
+  // DODGE BOX
+  const box = document.getElementById("dodgeBox")
+  setInterval(() => {
+    box.style.left = Math.random() * 300 + "px"
+    box.style.top = Math.random() * 20 + "px"
+  }, 800)
+
+  function lose() {
+    alert("You lost!")
+  }
+
+  // GUESS GAME
+  const secret = Math.floor(Math.random() * 20) + 1
+  function guess() {
+    let g = document.getElementById("guess").value
+    document.getElementById("guessOut").innerText =
+      g == secret ? "Correct!" : "Wrong!"
+  }
+
+  // REACTION GAME
+  let canClick = false
+  function reaction() {
+    const btn = document.getElementById("reactBtn")
+    btn.innerText = "Wait..."
+    btn.disabled = true
+
+    setTimeout(() => {
+      btn.innerText = "CLICK NOW!"
+      btn.disabled = false
+      canClick = true
+    }, Math.random() * 3000 + 1000)
+  }
+
+  document.getElementById("reactBtn").onclick = function () {
+    if (canClick) {
+      alert("Good reaction!")
+      canClick = false
+      this.innerText = "Start"
+    }
+  }
+
+  // MATH GAME
+  let a = Math.floor(Math.random()*10)
+  let b = Math.floor(Math.random()*10)
+  document.getElementById("mathQ").innerText = `${a} + ${b} = ?`
+
+  function checkMath() {
+    let ans = document.getElementById("mathA").value
+    alert(ans == a + b ? "Correct!" : "Wrong!")
+  }
+
+  // SIMPLE PONG
+  const canvas = document.getElementById("pong")
+  const ctx = canvas.getContext("2d")
+
+  let ballX = 150, ballY = 75, dx = 2, dy = 2
+
+  function draw() {
+    ctx.clearRect(0,0,300,150)
+    ctx.fillStyle = "white"
+    ctx.beginPath()
+    ctx.arc(ballX, ballY, 5, 0, Math.PI*2)
+    ctx.fill()
+
+    ballX += dx
+    ballY += dy
+
+    if (ballX < 0 || ballX > 300) dx *= -1
+    if (ballY < 0 || ballY > 150) dy *= -1
+
+    requestAnimationFrame(draw)
+  }
+
+  draw()
+</script>
+
+</body>
+</html>
