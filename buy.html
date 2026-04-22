@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout - Game Store</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      margin: 0;
+    }
+
+    header {
+      background: #1c1c1c;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .item {
+      background: #222;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🛒 Checkout</h1>
+  <p>Your selected games and total cost</p>
+</header>
+
+<div class="container">
+
+  <div id="cart"></div>
+
+  <h2 id="total">Total: $0</h2>
+
+  <button onclick="checkout()">Pay Now</button>
+</div>
+
+<script>
+  // Prices for each game
+  const prices = {
+    clicker: 1,
+    dodge: 2,
+    guess: 1,
+    reaction: 3,
+    math: 2,
+    pong: 5
+  }
+
+  // Get cart from URL like: buy.html?item=clicker
+  const params = new URLSearchParams(window.location.search)
+  const item = params.get("item")
+
+  let cartItems = []
+  let total = 0
+
+  function addItem(name) {
+    if (!name) return
+    cartItems.push(name)
+  }
+
+  // Allow multiple items like ?item=clicker,math,pong
+  if (item) {
+    item.split(",").forEach(addItem)
+  }
+
+  const cartDiv = document.getElementById("cart")
+
+  if (cartItems.length === 0) {
+    cartDiv.innerHTML = "<p>No games selected.</p>"
+  } else {
+    cartItems.forEach(i => {
+      let price = prices[i] || 0
+      total += price
+
+      cartDiv.innerHTML += `
+        <div class="item">
+          <strong>${i}</strong><br>
+          Price: $${price}
+        </div>
+      `
+    })
+  }
+
+  document.getElementById("total").innerText = "Total: $" + total
+
+  function checkout() {
+    if (cartItems.length === 0) {
+      alert("No items in cart!")
+      return
+    }
+
+    alert("Checkout complete! You paid $" + total)
+    window.location.href = "index.html"
+  }
+</script>
+
+</body>
+</html>
